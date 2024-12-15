@@ -277,11 +277,16 @@ function renderResultPage(cleanUrl) {
                 margin-top: 20px;
             }
             button {
-                width: 100%;
+                width: 100%; /* 按钮仍然占满容器宽度 */
                 background-color: #007BFF;
                 color: white;
                 border: none;
                 cursor: pointer;
+                padding: 15px; /* 增大按钮的内边距 */
+                font-size: 18px; /* 增大字体大小 */
+                border-radius: 8px; /* 圆角按钮 */
+                margin: 5px 0;
+                transition: background-color 0.3s;
             }
             button:hover {
                 background-color: #0056b3;
@@ -290,18 +295,27 @@ function renderResultPage(cleanUrl) {
     </head>
     <body>
         <div class="container">
-            <h2>处理结果</h2>
-            <p>已成功去除追踪参数！</p>
+            <h2>处理完成</h2>
             <div class="result">
-                <a href="${cleanUrl}" target="_blank">${cleanUrl}</a>
+                <p>清理后的URL：</p>
+                <a href="${cleanUrl}" target="_blank" id="cleanUrl">${cleanUrl}</a>
             </div>
             <div class="button-container">
-                <form method="POST" action="/">
-                    <button type="submit">返回</button>
-                </form>
+                <button id="copyButton">复制URL</button>
+                <button onclick="window.location.href = '/'">返回</button>
             </div>
+            <div id="copyMessage" style="color: green; margin-top: 10px; display: none;">已复制到剪贴板!</div>
+            <script>
+                const copyButton = document.getElementById('copyButton');
+                const cleanUrl = document.getElementById('cleanUrl').textContent;
+                copyButton.addEventListener('click', () => {
+                    navigator.clipboard.writeText(cleanUrl).then(() => {
+                        document.getElementById('copyMessage').style.display = 'block';
+                    });
+                });
+            </script>
         </div>
     </body>
     </html>
-  `
+  `;
 }
